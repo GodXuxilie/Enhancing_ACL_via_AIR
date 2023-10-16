@@ -235,50 +235,6 @@ def main():
     log.info('Pseudo-label finetune ends. \nTest: (SLF evaluation)')
     validate(val_train_loader, test_loader, model, log, num_classes=num_classes)
 
-    # AFF evalution
-    log.info('Starts AFF evaluation')
-    # zero init FC
-    model.fc.weight = torch.nn.Parameter(torch.zeros(model.fc.weight.shape))
-    model.fc.bias = torch.nn.Parameter(torch.zeros(model.fc.bias.shape))
-    model.fc.cuda()
-    
-    optimizer_AFF = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=2e-4)
-    scheduler_AFF = torch.optim.lr_scheduler.MultiStepLR(optimizer_AFF, milestones=[15,20], gamma=0.1)
-    
-    for epoch in range(1, args.epochs + 1):
-        # adjust learning rate for SGD
-        log.info("current lr is {}".format(
-            optimizer_AFF.state_dict()['param_groups'][0]['lr']))
-
-        # linear classification
-        train_AFF(args, model, device, val_train_loader_AT, optimizer_AFF, epoch, log)
-        scheduler_AFF.step()
-
-        # save checkpoint
-        torch.save({
-            'epoch': epoch,
-            'state_dict': model.state_dict(),
-            'optim': optimizer.state_dict(),
-        }, os.path.join(save_dir, 'model_finetune.pt'))  
-
-    model_save = resnet18_single(num_classes=num_classes) # original resnet (without multi BatchNorm)
-    state_dict = torch.load(os.path.join(save_dir, 'model_finetune.pt'))['state_dict']
-    state_dict = cvt_state_dict(state_dict,args)
-    model_save.load_state_dict(state_dict)
-    model_save.eval().cuda()
-    
-    _, test_tacc = eval_test(model_save, device, test_loader, log, advFlag=None)
-    test_atacc = eval_adv_test(model_save, device, test_loader, epsilon=8/255, alpha=2/255,
-                               criterion=F.cross_entropy, log=log, attack_iter=20)
-    log.info("On the final model (AFF evaluation), test tacc is {}, test atacc is {}".format(
-        test_tacc, test_atacc))
-    
-    log_path = 'checkpoints/' + args.experiment + '/robustness_result.txt'
-    runAA(model_save, log_path)
-    torch.save({
-        'state_dict': model_save.state_dict(),
-        }, os.path.join(save_dir, 'model_full_finetune_singleBN.pt'))
-
 
 def train(train_loader, model, optimizer, scheduler, epoch, log):
     losses = AverageMeter()

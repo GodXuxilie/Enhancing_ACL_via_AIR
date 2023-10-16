@@ -1,7 +1,7 @@
 
 # Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization
 ---
-This repository provides codes for NeurIPS 2023 paper: **Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization** (https://arxiv.org/pdf/2305.00374.pdf) 
+This repository provides codes for NeurIPS 2023 paper: **Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization** (https://arxiv.org/pdf/2305.00374.pdf)
 <br> Xilie Xu* (NUS), Jingfeng Zhang* (RIKEN-AIP/University of Auckland), Feng Liu (The University of Melbourne), Masashi Sugiyama (RIKEN-AIP/The University of Toyko), Mohan Kankanhalli (NUS).
 
 ## Environment
@@ -10,13 +10,31 @@ This repository provides codes for NeurIPS 2023 paper: **Enhancing Adversarial C
 + CUDA 11.6
 
 
-## [Script](./run.sh)
+## Script
+We provide the detailed script for pre-training and fine-tuning in [```run.sh```](./run.sh).
+
+## Pre-Training
 ```
-# ACL with IR
-python pretraining.py exp_dir --dataset dataset --ACL_DS 
-# DynACL with IR
-python pretraining.py exp_dir --dataset dataset --ACL_DS --DynAug
+python pretraining.py exp_dir --ACL_DS --DynAug --dataset pretraining_dataset
 ```
+
+## Pre-Training with Post-Processing
+```
+python LP-AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
+```
+
+## Fine-Tuning
+```
+### SLF ###
+python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task --cvt_state_dict --bnNameCnt 1 --evaluation_mode SLF
+### ALF ###
+python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task --cvt_state_dict --bnNameCnt 1 --evaluation_mode ALF
+### AFF ###
+python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
+```
+
+
+
 
 ## BibTeX
 ```
