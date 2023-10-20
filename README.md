@@ -38,7 +38,7 @@ python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-traine
 
 ## BibTeX
 ```
-@inproceedings{xu2023IR,
+@inproceedings{xu2023AIR,
   title={Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization},
   author={Xu, Xilie and Zhang, Jingfeng and Liu, Feng and Sugiyama, Masashi and Kankanhalli, Mohan},
   booktitle={Conference on Neural Information Processing Systems (NeurIPS)},
