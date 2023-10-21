@@ -38,7 +38,7 @@ python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-traine
 
 It is recommended to use the fine-tuning code provided in [RobustSSL benchmark](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main#fine-tuning):
 - [Vanilla fine-tuning](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/Vanilla_Finetuning): You need to specify hyper-parameters.
-- [AutoLoRa](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/AutoLoRa): An automated and parameter-free robust fine-tuning framework. You DO NOT need to specify hyper-parameters.
+- [AutoLoRa](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/AutoLoRa#fine-tuning-on-low-resolution-downstream-datasets): An automated and parameter-free robust fine-tuning framework. You DO NOT need to specify hyper-parameters.
 
 ## BibTeX
 ```
