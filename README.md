@@ -10,15 +10,17 @@ This repository provides codes for NeurIPS 2023 paper: **Enhancing Adversarial C
 + CUDA 11.6
 
 
-## Script
+## Script & Pre-Trained Checkpoints
 We provide the detailed script for pre-training and fine-tuning in [```run.sh```](./run.sh).
 
-### Pre-Training
+The pre-trained checkpoints for DynACL-AIR and DynACL-AIR++ on CIFAR-10/CIFAR-100/STL-10 using ResNet-18 are in [Model Zoo](https://github.com/GodXuxilie/RobustSSL_Benchmark) of [RobustSSL Benchmark](https://robustssl.github.io).
+
+### Pre-Training (DynACL-AIR)
 ```
 python pretraining.py exp_dir --ACL_DS --DynAug --dataset pretraining_dataset
 ```
 
-### Pre-Training with Post-Processing
+### Pre-Training with Post-Processing (DynACL-AIR++)
 ```
 python LP-AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
 ```
@@ -32,9 +34,6 @@ python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained
 ### AFF ###
 python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
 ```
-
-### Pre-Trained Checkpoints
-We provide the pre-trained checkpoints for DynACL-AIR and DynACL-AIR++ on CIFAR-10/CIFAR-100/STL-10 in [Model Zoo](https://github.com/GodXuxilie/RobustSSL_Benchmark) of [RobustSSL Benchmark](https://robustssl.github.io).
 
 ## BibTeX
 ```
