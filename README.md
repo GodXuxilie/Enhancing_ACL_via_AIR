@@ -33,6 +33,9 @@ python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained
 python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
 ```
 
+### Pre-Trained Checkpoints
+We provide the pre-trained checkpoints for DynACL-AIR and DynACL-AIR++ on CIFAR-10/CIFAR-100/STL-10 in [Model Zoo](https://github.com/GodXuxilie/RobustSSL_Benchmark) of [RobustSSL Benchmark](https://robustssl.github.io).
+
 ## BibTeX
 ```
 @inproceedings{xu2023AIR,
