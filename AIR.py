@@ -6,7 +6,7 @@ import torch.nn.functional as F
 class AIR_Loss(nn.Module):
 
     def __init__(self, normalize=True, temperature=0.5, lambda1=0.5,lambda2=0.5):
-        super(ACL_IR_Loss, self).__init__()
+        super(AIR_Loss, self).__init__()
         self.normalize = normalize
         self.temperature = temperature
         self.lambda1 = lambda1
