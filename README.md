@@ -33,9 +33,6 @@ python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained
 python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
 ```
 
-
-
-
 ## BibTeX
 ```
 @inproceedings{xu2023IR,

@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 ### Implementation is based on https://github.com/NightShade99/Self-Supervised-Vision/blob/42183d391f51c60383ff0cb044e2d71379aa7461/utils/losses.py#L154 ###
-class ACL_IR_Loss(nn.Module):
+class AIR_Loss(nn.Module):
 
     def __init__(self, normalize=True, temperature=0.5, lambda1=0.5,lambda2=0.5):
         super(ACL_IR_Loss, self).__init__()

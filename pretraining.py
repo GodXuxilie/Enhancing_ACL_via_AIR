@@ -10,7 +10,7 @@ import numpy as np
 from torchvision.datasets import CIFAR10, CIFAR100, STL10
 from PIL import Image
 from optimizer.lars import LARS
-from losses import ACL_IR_Loss
+from AIR import AIR_Loss
 
 parser = argparse.ArgumentParser(description='PyTorch Cifar10 Training')
 parser.add_argument('experiment', type=str, help='location for saving trained models')
@@ -33,8 +33,8 @@ parser.add_argument('--gpu', default='0', type=str)
 parser.add_argument('--eps', default=8.0, type=float)
 parser.add_argument('--DynAug', action='store_true', help='whether to use DynACL')
 
-parser.add_argument('--lambda1', default=0.5, type=float, help='weight of SIR')
-parser.add_argument('--lambda2', default=0.5, type=float, help='weight of AIR')
+parser.add_argument('--lambda1', default=0.5, type=float, help='weight of the regularizer for standard representations')
+parser.add_argument('--lambda2', default=0.5, type=float, help='weight of the regularizer for robust representations')
 
 def cosine_annealing(step, total_steps, lr_max, lr_min, warmup_steps=0):
     assert warmup_steps >= 0
@@ -306,7 +306,7 @@ def train(train_loader, model, optimizer, scheduler, epoch, log, strength, LAMBD
             features_adv = model.train()(inputs_adv, 'pgd')
             features = model.train()(inputs, 'normal')
             z_orig = model.train()(ori_inputs, 'normal')
-            loss_fn = ACL_IR_Loss(normalize=True, temperature=0.5, lambda1=args.lambda1, lambda2=args.lambda2)
+            loss_fn = AIR_Loss(normalize=True, temperature=0.5, lambda1=args.lambda1, lambda2=args.lambda2)
             zi = features[[int(2 * i) for i in range(d[0])]]
             zj = features[[int(2 * i + 1) for i in range(d[0])]]
             zi_adv = features_adv[[int(2 * i) for i in range(d[0])]]
