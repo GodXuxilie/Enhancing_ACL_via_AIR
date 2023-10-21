@@ -26,6 +26,7 @@ python LP-AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_
 ```
 
 ### Fine-Tuning
+
 ```
 ### SLF ###
 python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task --cvt_state_dict --bnNameCnt 1 --evaluation_mode SLF
@@ -34,6 +35,10 @@ python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained
 ### AFF ###
 python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
 ```
+
+It is recommended to use the fine-tuning code provided in [Model zoo of RobustSSL benchmark](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main#fine-tuning):
+- [vanilla fine-tuning](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/Vanilla): You need to specify hyper-parameters.
+- [AutoLoRa](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/AutoLoRa): An automated robust fine-tuning framework. You DO NOT need to specify hyper-parameters.
 
 ## BibTeX
 ```
