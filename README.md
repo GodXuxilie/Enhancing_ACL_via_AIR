@@ -43,7 +43,7 @@ python finetuning.py --gpu 2 --experiment DynACL_AIR++_cifar10_r18_cifar10 --dat
 @inproceedings{xu2023AIR,
   title={Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization},
   author={Xu, Xilie and Zhang, Jingfeng and Liu, Feng and Sugiyama, Masashi and Kankanhalli, Mohan},
-  booktitle={Conference on Neural Information Processing Systems (NeurIPS)},
+  booktitle={NeurIPS},
   year={2023}
 }
 ```
