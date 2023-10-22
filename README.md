@@ -21,7 +21,6 @@ python pretraining.py DynACL_AIR_cifar10 --dataset cifar10 --ACL_DS --DynAug
 python pretraining.py DynACL_AIR_cifar100 --dataset cifar100 --ACL_DS --DynAug
 python pretraining.py DynACL_AIR_stl10 --dataset stl10 --ACL_DS --DynAug
 ```
-
 #### Pre-Training with Post-Processing (DynACL-AIR++)
 ```
 python LP-AFF.py --experiment DynACL_AIR++_cifar10 --gpu 0 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --dataset cifar10
@@ -29,10 +28,8 @@ python LP-AFF.py --experiment DynACL_AIR++_cifar100 --gpu 0 --checkpoint ./check
 python LP-AFF.py --experiment DynACL_AIR++_stl10 --gpu 0 --checkpoint ./checkpoints/DynACL_AIR_stl10/model.pt --dataset stl10
 
 ```
-
 #### Fine-Tuning
 Detailed fine-tuning scripts are in [`run.sh`](./run.sh).
-
 ```
 ### fine-tuning pre-trained models ###
 python finetuning.py --gpu 2 --experiment DynACL_AIR_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR --model r18 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
