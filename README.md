@@ -35,10 +35,10 @@ Detailed fine-tuning scripts are in [`run.sh`](./run.sh).
 
 ```
 ### fine-tuning pre-trained models ###
-python vanilla_finetuning.py --gpu 2 --experiment DynACL_AIR_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR --model r18 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
+python finetuning.py --gpu 2 --experiment DynACL_AIR_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR --model r18 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
 
 ### fine-tuning pre-trained models with post-processing ###
-python vanilla_finetuning.py --gpu 2 --experiment DynACL_AIR++_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR++ --model r18 --checkpoint ./checkpoints/DynACL_AIR++_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
+python finetuning.py --gpu 2 --experiment DynACL_AIR++_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR++ --model r18 --checkpoint ./checkpoints/DynACL_AIR++_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
 ```
 
 ## BibTeX
