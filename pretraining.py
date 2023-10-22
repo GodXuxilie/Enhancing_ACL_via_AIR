@@ -4,13 +4,14 @@ import argparse
 import torch.backends.cudnn as cudnn
 import torch.optim
 import torch.utils.data
-from utils import *
+from finetuning_utils import *
 import torchvision.transforms as transforms
 import numpy as np
 from torchvision.datasets import CIFAR10, CIFAR100, STL10
 from PIL import Image
 from optimizer.lars import LARS
 from AIR import AIR_Loss
+import os
 
 parser = argparse.ArgumentParser(description='PyTorch Cifar10 Training')
 parser.add_argument('experiment', type=str, help='location for saving trained models')

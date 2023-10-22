@@ -15,30 +15,31 @@ We provide the detailed script for pre-training and fine-tuning in [```run.sh```
 
 The pre-trained checkpoints for DynACL-AIR and DynACL-AIR++ on CIFAR-10/CIFAR-100/STL-10 using ResNet-18 are in [Model Zoo](https://github.com/GodXuxilie/RobustSSL_Benchmark) of [RobustSSL Benchmark](https://robustssl.github.io).
 
-### Pre-Training (DynACL-AIR)
+#### Pre-Training (DynACL-AIR)
 ```
-python pretraining.py exp_dir --ACL_DS --DynAug --dataset pretraining_dataset
-```
-
-### Pre-Training with Post-Processing (DynACL-AIR++)
-```
-python LP-AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
+python pretraining.py DynACL_AIR_cifar10 --dataset cifar10 --ACL_DS --DynAug
+python pretraining.py DynACL_AIR_cifar100 --dataset cifar100 --ACL_DS --DynAug
+python pretraining.py DynACL_AIR_stl10 --dataset stl10 --ACL_DS --DynAug
 ```
 
-### Fine-Tuning
+#### Pre-Training with Post-Processing (DynACL-AIR++)
+```
+python LP-AFF.py --experiment DynACL_AIR++_cifar10 --gpu 0 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --dataset cifar10
+python LP-AFF.py --experiment DynACL_AIR++_cifar100 --gpu 0 --checkpoint ./checkpoints/DynACL_AIR_cifar100/model.pt --dataset cifar100
+python LP-AFF.py --experiment DynACL_AIR++_stl10 --gpu 0 --checkpoint ./checkpoints/DynACL_AIR_stl10/model.pt --dataset stl10
 
 ```
-### SLF ###
-python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task --cvt_state_dict --bnNameCnt 1 --evaluation_mode SLF
-### ALF ###
-python test_LF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task --cvt_state_dict --bnNameCnt 1 --evaluation_mode ALF
-### AFF ###
-python test_AFF.py --experiment exp_name --gpu 0 --checkpoint path_of_pre-trained_model --dataset downstream_task
-```
 
-It is recommended to use the fine-tuning code provided in [RobustSSL benchmark](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main#fine-tuning):
-- [Vanilla fine-tuning](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/Vanilla_Finetuning): You need to specify hyper-parameters.
-- [AutoLoRa](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/AutoLoRa#fine-tuning-on-low-resolution-downstream-datasets): An automated and parameter-free robust fine-tuning framework. You DO NOT need to specify hyper-parameters.
+#### Fine-Tuning
+Detailed fine-tuning scripts are in [`run.sh`](./run.sh).
+
+```
+### fine-tuning pre-trained models ###
+python vanilla_finetuning.py --gpu 2 --experiment DynACL_AIR_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR --model r18 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
+
+### fine-tuning pre-trained models with post-processing ###
+python vanilla_finetuning.py --gpu 2 --experiment DynACL_AIR++_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR++ --model r18 --checkpoint ./checkpoints/DynACL_AIR++_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
+```
 
 ## BibTeX
 ```

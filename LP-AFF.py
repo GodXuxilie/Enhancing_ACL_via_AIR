@@ -14,7 +14,7 @@ import torchvision.datasets as datasets
 from torch.utils.data.sampler import SubsetRandomSampler
 # from models.resnet_multi_bn import resnet
 from models.resnet_multi_bn import resnet18
-from utils import *
+from finetuning_utils import *
 import torchvision.transforms as transforms
 import torch.nn.functional as F
 from dataset import CIFAR10IndexPseudoLabelEnsemble, CIFAR100IndexPseudoLabelEnsemble
@@ -22,6 +22,7 @@ from dataset import CIFAR10IndexPseudoLabelEnsemble, CIFAR100IndexPseudoLabelEns
 from optimizer.lars import LARS
 
 from models.resnet import resnet18 as resnet18_single
+from kmeans_pytorch import kmeans
 
 parser = argparse.ArgumentParser(description='DynACL++ (LPAFT-AFF)')
 parser.add_argument('--experiment', type=str,
@@ -69,9 +70,6 @@ os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 n_gpu = torch.cuda.device_count()
 device = 'cuda'
 
-pseudo_label = torch.load(args.label_path, map_location="cpu").numpy().tolist()
-
-
 def main():
     global args
 
@@ -83,6 +81,12 @@ def main():
 
     log = logger(path=save_dir)
     log.info(str(args))
+
+    # generate pesudo labels via clustering
+    num_clusters = assign(args, name='cluster_ids')
+    label_path = os.path.join(args.experiment, name+'_{}_{}.pt'.format(num_clusters, args.dataset))
+    pseudo_label = torch.load(label_path, map_location="cpu").numpy().tolist()
+    
     
     num_classes = 10 if args.dataset != 'cifar100' else 100
 
@@ -217,23 +221,23 @@ def main():
                 'optim': optimizer.state_dict(),
             }, filename=os.path.join(save_dir, 'model.pt'))
 
-        if epoch % args.val_frequency == 0 and epoch > 0:
+        # if epoch % args.val_frequency == 0 and epoch > 0:
 
-            acc, tacc, rtacc = validate(val_train_loader, test_loader,
-                                        model, log, num_classes=num_classes)
+        #     acc, tacc, rtacc = validate(val_train_loader, test_loader,
+        #                                 model, log, num_classes=num_classes)
             
-            # evaluate acc
-            save_checkpoint({
-                'epoch': epoch,
-                'state_dict': model.state_dict(),
-                'optim': optimizer.state_dict(),
-                'acc': acc,
-                'tacc': tacc,
-                'rtacc': rtacc,
-            }, filename=os.path.join(save_dir, 'model_{}.pt'.format(epoch)))
+        #     # evaluate acc
+        #     save_checkpoint({
+        #         'epoch': epoch,
+        #         'state_dict': model.state_dict(),
+        #         'optim': optimizer.state_dict(),
+        #         'acc': acc,
+        #         'tacc': tacc,
+        #         'rtacc': rtacc,
+        #     }, filename=os.path.join(save_dir, 'model_{}.pt'.format(epoch)))
 
-    log.info('Pseudo-label finetune ends. \nTest: (SLF evaluation)')
-    validate(val_train_loader, test_loader, model, log, num_classes=num_classes)
+    log.info('Pseudo-label finetune ends.')
+    # validate(val_train_loader, test_loader, model, log, num_classes=num_classes)
 
 
 def train(train_loader, model, optimizer, scheduler, epoch, log):
@@ -528,6 +532,77 @@ def cvt_state_dict(state_dict, args):
     state_dict_new['fc.weight'] = state_dict['fc.weight']
     state_dict_new['fc.bias'] = state_dict['fc.bias']
     return state_dict_new
+
+
+def assign(args, name='cluster_ids'):
+    load_path = args.checkpoint
+    if not args.dataset == 'stl10':
+        from models.resnet_multi_bn import resnet18, proj_head
+    else:
+        from models.resnet_multi_bn_stl import resnet18, proj_head
+    bn_names = ['normal', 'pgd']
+    # bn_names = ['normal']
+    model = resnet18(num_classes = 10, bn_names = bn_names)
+    ch = model.fc.in_features
+    model.fc = proj_head(ch, bn_names=bn_names, twoLayerProj=False)
+    model.cuda()
+    checkpoint = torch.load(load_path, map_location='cpu')
+    if 'state_dict' in checkpoint.keys():
+        checkpoint = checkpoint['state_dict']
+    
+    model.load_state_dict(checkpoint)
+    # model.cuda()
+    tfs_test = transforms.Compose([
+            transforms.ToTensor(),
+        ])
+    if args.dataset == 'cifar10':
+        test_datasets = datasets.CIFAR10(
+                root=args.data, train=True, transform=tfs_test, download=True)
+        num_classes = 10
+    elif args.dataset == 'cifar100':
+        test_datasets = datasets.CIFAR100(
+                root=args.data, train=True, transform=tfs_test, download=True)
+        num_classes = 100
+    elif args.dataset == 'stl10':
+        test_datasets = datasets.STL10(
+            root=args.data, split='unlabeled', transform=tfs_test, download=True)
+        num_classes = 10
+    else:
+        raise NotImplementedError
+    test_loader = torch.utils.data.DataLoader(
+            test_datasets,
+            num_workers=4,
+            batch_size=5000,
+            shuffle=False)
+    rep = None
+    tt = None
+    
+    for x, y in test_loader:
+        with torch.no_grad():
+            x = x.cuda()
+            x = model.eval()(x, 'normal', return_features=True)
+            print(x.size())
+            if(rep == None):
+                rep = x.cpu()
+                tt = y
+            else:
+                rep = torch.concat([rep,x.cpu()])
+                tt = torch.concat([tt, y])
+    
+    tt = tt.squeeze()
+    rep = rep.cuda()
+    
+    for _ in range(1):
+        for num_clusters in [num_classes]:
+
+            cluster_ids_x, _ = kmeans(
+                X=rep, num_clusters=num_clusters, distance='euclidean', device=torch.device('cuda:0'), tol=0.00001
+                )
+
+            save_dir = os.path.join(args.experiment, name+'_{}_{}.pt'.format(num_clusters, args.dataset))
+            torch.save(cluster_ids_x, save_dir)
+            
+    return num_clusters
 
 if __name__ == '__main__':
     main()
