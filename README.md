@@ -32,10 +32,10 @@ python LP-AFF.py --experiment DynACL_AIR++_stl10 --gpu 0 --checkpoint ./checkpoi
 Detailed fine-tuning scripts are in [`run.sh`](./run.sh).
 ```
 ### fine-tuning pre-trained models ###
-python finetuning.py --gpu 2 --experiment DynACL_AIR_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR --model r18 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
+python finetuning.py --gpu 2 --experiment DynACL_AIR_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL-AIR --model r18 --checkpoint ./checkpoints/DynACL_AIR_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
 
 ### fine-tuning pre-trained models with post-processing ###
-python finetuning.py --gpu 2 --experiment DynACL_AIR++_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL_AIR++ --model r18 --checkpoint ./checkpoints/DynACL_AIR++_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
+python finetuning.py --gpu 2 --experiment DynACL_AIR++_cifar10_r18_cifar10 --dataset cifar10 --pretraining DynACL-AIR++ --model r18 --checkpoint ./checkpoints/DynACL_AIR++_cifar10/model.pt --mode ALL --eval-AA --eval-OOD
 ```
 
 It is recommended to use the code of [AutoLoRa](https://github.com/GodXuxilie/RobustSSL_Benchmark/tree/main/Finetuning_Methods/AutoLoRa) to further justify the effectiveness of your pre-training method. AutoLoRa is an automated robust fine-tuning framework, which exempts the burden of searching for appropriate hyper-parameters and can further unleash the power of pre-trained models in downstream tasks.
