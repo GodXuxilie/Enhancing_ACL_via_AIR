@@ -787,7 +787,7 @@ def setup_hyperparameter(args, mode):
         args.bnNameCnt = 1
 
     ####### Hyperparameter of ACL_AIR ########
-    elif args.pretraining == 'ACL_AIR':
+    elif args.pretraining == 'ACL-AIR':
         if mode == 'SLF':
             if args.dataset == 'cifar10':
                 args.batch_size = 512
@@ -824,7 +824,7 @@ def setup_hyperparameter(args, mode):
         args.bnNameCnt = 1   
 
     ####### Hyperparameter of DynACL_AIR ########
-    elif args.pretraining == 'DynACL_AIR':
+    elif args.pretraining == 'DynACL-AIR':
         if mode == 'SLF':
             if args.dataset == 'cifar10':
                 args.batch_size = 512
@@ -861,7 +861,7 @@ def setup_hyperparameter(args, mode):
         args.bnNameCnt = 1
 
     ####### Hyperparameter of DynACL++_AIR ########
-    elif args.pretraining == 'DynACL_AIR++':
+    elif args.pretraining == 'DynACL-AIR++':
         if mode == 'SLF':
             if args.dataset == 'cifar10':
                 args.batch_size = 512

@@ -13,7 +13,7 @@ parser.add_argument('--experiment', type=str,
                     we recommend to specify it as a subdirectory of the pretraining export path',
                     required=True)
 parser.add_argument('--pretraining', type=str, default='ACL',
-                    choices=['ACL', 'DynACL', 'DynACL++', 'ACL_AIR', 'DynACL_AIR', 'DynACL_AIR++'])
+                    choices=['ACL', 'DynACL', 'DynACL++', 'ACL-AIR', 'DynACL-AIR', 'DynACL-AIR++'])
 
 parser.add_argument('--model', type=str, default='r18')
 parser.add_argument('--checkpoint', default='', type=str,
