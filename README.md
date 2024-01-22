@@ -41,11 +41,13 @@ It is recommended to use the code of [AutoLoRa](https://github.com/GodXuxilie/Ro
 
 ## BibTeX
 ```
-@inproceedings{xu2023AIR,
-  title={Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization},
-  author={Xu, Xilie and Zhang, Jingfeng and Liu, Feng and Sugiyama, Masashi and Kankanhalli, Mohan},
-  booktitle={NeurIPS},
-  year={2023}
+@inproceedings{
+xu2023enhancing,
+title={Enhancing Adversarial Contrastive Learning via Adversarial Invariant Regularization},
+author={Xilie Xu and Jingfeng Zhang and Feng Liu and Masashi Sugiyama and Mohan Kankanhalli},
+booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+year={2023},
+url={https://openreview.net/forum?id=zuXyQsXVLF}
 }
 ```
 
